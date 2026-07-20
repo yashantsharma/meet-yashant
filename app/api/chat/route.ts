@@ -1,15 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 import fs from "fs";
 import path from "path";
-import { GoogleGenAI } from "@google/genai";
+import OpenAI from "openai";
 
-const ai = new GoogleGenAI({
-  apiKey: process.env.GEMINI_API_KEY!,
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY!,
 });
 
 export async function POST(req: NextRequest) {
   try {
-    const { message } = await req.json();
+    const { messages } = await req.json();
 
     const knowledgePath = path.join(
       process.cwd(),
@@ -19,39 +19,52 @@ export async function POST(req: NextRequest) {
 
     const knowledge = fs.readFileSync(knowledgePath, "utf8");
 
-    const prompt = `
+    const conversation = messages
+      .map(
+        (m: { role: string; text: string }) =>
+          `${m.role.toUpperCase()}: ${m.text}`
+      )
+      .join("\n\n");
+
+    const systemPrompt = `
 You are Ask Yashant AI.
 
 You are the official AI assistant for Yashant Sharma.
 
-Your purpose is to answer questions naturally about Yashant's career, experience, projects, education, consulting work, entrepreneurship, leadership and achievements.
+Your purpose is to answer questions naturally about Yashant's career, consulting experience, entrepreneurship, leadership, education, projects and achievements.
 
 Rules:
-
-- Answer in a conversational, confident tone.
-- Never say "Based on the information provided..."
-- Never mention "knowledge base."
+- Speak naturally and confidently.
+- Never say "Based on the information provided."
+- Never mention a knowledge base.
 - Write as if you already know Yashant.
-- Use bullet points where helpful.
-- Keep answers concise unless the user asks for detail.
-- If information is missing, simply say:
+- Use markdown formatting where useful.
+- Use bullet points when appropriate.
+- Keep answers concise unless asked for detail.
+- If the answer is not available, say:
 "I don't have enough information about that yet."
 
-Here is Yashant's information:
+Here is Yashant's complete profile:
 
 ${knowledge}
-
-User:
-${message}
 `;
 
-    const response = await ai.models.generateContent({
-      model: "gemini-3.5-flash",
-      contents: prompt,
+    const response = await openai.responses.create({
+      model: "gpt-5-mini",
+      input: [
+        {
+          role: "system",
+          content: systemPrompt,
+        },
+        {
+          role: "user",
+          content: conversation,
+        },
+      ],
     });
 
     return NextResponse.json({
-      reply: response.text ?? "Sorry, I couldn't generate a response.",
+      reply: response.output_text,
     });
   } catch (error) {
     console.error(error);

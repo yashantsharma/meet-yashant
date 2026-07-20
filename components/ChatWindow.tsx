@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 type Props = {
   open: boolean;
@@ -35,52 +37,54 @@ export default function ChatWindow({ open, onClose }: Props) {
   if (!open) return null;
 
   async function sendMessage(message: string) {
-    if (!message.trim()) return;
+  if (!message.trim()) return;
 
-    const userMessage = message;
+  const userMessage = message;
 
-    setMessages((prev) => [
-      ...prev,
+  const updatedMessages: Message[] = [
+    ...messages,
+    {
+      role: "user",
+      text: userMessage,
+    },
+  ];
+
+  setMessages(updatedMessages);
+  setInput("");
+  setLoading(true);
+
+  try {
+    const res = await fetch("/api/chat", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        messages: updatedMessages,
+      }),
+    });
+
+    const data = await res.json();
+
+    setMessages([
+      ...updatedMessages,
       {
-        role: "user",
-        text: userMessage,
+        role: "assistant",
+        text: data.reply,
       },
     ]);
+  } catch {
+    setMessages([
+      ...updatedMessages,
+      {
+        role: "assistant",
+        text: "Something went wrong while generating the response.",
+      },
+    ]);
+  }
 
-    setInput("");
-    setLoading(true);
+  setLoading(false);
 
-    try {
-      const res = await fetch("/api/chat", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          message: userMessage,
-        }),
-      });
-
-      const data = await res.json();
-
-      setMessages((prev) => [
-        ...prev,
-        {
-          role: "assistant",
-          text: data.reply,
-        },
-      ]);
-    } catch {
-      setMessages((prev) => [
-        ...prev,
-        {
-          role: "assistant",
-          text: "Something went wrong while generating the response.",
-        },
-      ]);
-    }
-
-    setLoading(false);
   }
 
   const quickQuestions = [
@@ -172,7 +176,9 @@ export default function ChatWindow({ open, onClose }: Props) {
                   : "bg-white border text-gray-800"
               }`}
             >
-              {message.text}
+              <ReactMarkdown remarkPlugins={[remarkGfm]}>
+  {message.text}
+</ReactMarkdown>
             </div>
 
           </div>
