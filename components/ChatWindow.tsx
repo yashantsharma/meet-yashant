@@ -1,20 +1,76 @@
 "use client";
 
+import { useState } from "react";
+
 type Props = {
   open: boolean;
   onClose: () => void;
 };
 
+type Message = {
+  role: "user" | "assistant";
+  text: string;
+};
+
 export default function ChatWindow({ open, onClose }: Props) {
+  const [input, setInput] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const [messages, setMessages] = useState<Message[]>([
+    {
+      role: "assistant",
+      text: "👋 Hi! I'm Ask Yashant AI. Ask me anything about Yashant's experience, leadership, projects, education, or consulting career.",
+    },
+  ]);
+
   if (!open) return null;
 
-  return (
-    <div className="fixed bottom-24 right-6 w-[380px] h-[620px] bg-white rounded-3xl shadow-2xl z-50 border overflow-hidden">
+  async function sendMessage(message: string) {
+    if (!message.trim()) return;
 
-      <div className="flex items-center justify-between p-5 border-b">
+    setMessages((prev) => [...prev, { role: "user", text: message }]);
+    setInput("");
+    setLoading(true);
+
+    try {
+      const res = await fetch("/api/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          message,
+        }),
+      });
+
+      const data = await res.json();
+
+      setMessages((prev) => [
+        ...prev,
+        {
+          role: "assistant",
+          text: data.reply,
+        },
+      ]);
+    } catch {
+      setMessages((prev) => [
+        ...prev,
+        {
+          role: "assistant",
+          text: "Sorry, something went wrong.",
+        },
+      ]);
+    }
+
+    setLoading(false);
+  }
+
+  return (
+    <div className="fixed bottom-24 right-6 w-[420px] h-[650px] bg-white rounded-3xl shadow-2xl border flex flex-col z-50">
+
+      <div className="flex justify-between items-center p-5 border-b">
 
         <div>
-
           <h2 className="font-bold text-xl text-gray-900">
             Ask Yashant
           </h2>
@@ -22,48 +78,60 @@ export default function ChatWindow({ open, onClose }: Props) {
           <p className="text-sm text-gray-500">
             AI Career Assistant
           </p>
-
         </div>
 
         <button
           onClick={onClose}
-          className="text-gray-500 hover:text-black text-xl"
+          className="text-xl"
         >
           ✕
         </button>
 
       </div>
 
-      <div className="p-5">
+      <div className="flex-1 overflow-y-auto p-5 space-y-4">
 
-        <h3 className="font-semibold text-gray-800 mb-3">
-          Welcome 👋
-        </h3>
+        {messages.map((msg, index) => (
+          <div
+            key={index}
+            className={
+              msg.role === "user"
+                ? "bg-blue-600 text-white rounded-2xl p-3 ml-10"
+                : "bg-gray-100 rounded-2xl p-3 mr-10 text-gray-800"
+            }
+          >
+            {msg.text}
+          </div>
+        ))}
 
-        <p className="text-gray-600 mb-6">
-         Ask me anything about Yashant&apos;s consulting experience,
-leadership, entrepreneurship, education, or projects. 
-        </p>
+        {loading && (
+          <div className="bg-gray-100 rounded-2xl p-3 mr-10">
+            Thinking...
+          </div>
+        )}
 
-        <div className="space-y-3">
+      </div>
 
-          <button className="w-full rounded-xl border p-3 text-left hover:bg-gray-50">
-            💼 Tell me about PwC
-          </button>
+      <div className="border-t p-4 flex gap-2">
 
-          <button className="w-full rounded-xl border p-3 text-left hover:bg-gray-50">
-            🚀 Farm to Folks
-          </button>
+        <input
+          className="flex-1 border rounded-xl px-4 py-3 text-black"
+          placeholder="Ask anything..."
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              sendMessage(input);
+            }
+          }}
+        />
 
-          <button className="w-full rounded-xl border p-3 text-left hover:bg-gray-50">
-            📄 Summarize Resume
-          </button>
-
-          <button className="w-full rounded-xl border p-3 text-left hover:bg-gray-50">
-            🎯 Why should I hire Yashant?
-          </button>
-
-        </div>
+        <button
+          onClick={() => sendMessage(input)}
+          className="bg-blue-600 text-white px-5 rounded-xl"
+        >
+          Send
+        </button>
 
       </div>
 
