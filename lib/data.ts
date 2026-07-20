@@ -14,7 +14,7 @@ export const navLinks = [
   { href: "/journey", label: "Journey" },
   { href: "/projects", label: "Projects" },
   { href: "/leadership", label: "Leadership" },
-  { href: "/resume", label: "Resume" },
+  { href: "/Yashant_Sharma_Resume.pdf", label: "Resume" },
   { href: "/contact", label: "Contact" },
 ];
 
