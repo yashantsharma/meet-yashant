@@ -19,7 +19,7 @@ export default function ChatWindow({ open, onClose }: Props) {
     {
       role: "assistant",
       text:
-        "Hi! I'm Ask Yashant AI.\n\nI can answer questions about Yashant's consulting experience, leadership, entrepreneurship, projects, education and resume.",
+  "# 👋 Meet Yashant through AI\n\nI'm Yashant's AI career assistant.\n\nAsk me anything about his consulting experience, entrepreneurship, leadership, education, projects, achievements, or career journey.\n\nOr start with one of the recruiter questions below.",
     },
   ]);
 
@@ -87,12 +87,35 @@ export default function ChatWindow({ open, onClose }: Props) {
 
   }
 
-  const quickQuestions = [
-    "Tell me about PwC",
-    "Summarize Yashant's resume",
-    "Why should I hire Yashant?",
-    "Tell me about Farm to Folks",
-  ];
+ const quickQuestions = [
+  {
+    category: "💼 Hiring",
+    items: [
+      "Why should I hire Yashant?",
+      "Summarize Yashant's profile",
+      "What makes Yashant different?",
+      "What industries has he worked in?",
+    ],
+  },
+  {
+    category: "📈 Experience",
+    items: [
+      "Tell me about PwC",
+      "Tell me about Farm To Folks",
+      "Tell me about Wisdom Tree",
+      "Tell me about Jamboree",
+    ],
+  },
+  {
+    category: "🚀 Leadership",
+    items: [
+      "What is Yashant's leadership style?",
+      "Tell me about his biggest achievement",
+      "Tell me about a difficult challenge",
+      "Why did he move from entrepreneurship to consulting?",
+    ],
+  },
+];
 
   return (
     <div className="fixed bottom-6 right-6 z-50 h-[700px] w-[430px] overflow-hidden rounded-3xl border border-gray-200 bg-white shadow-2xl flex flex-col">
@@ -132,30 +155,45 @@ export default function ChatWindow({ open, onClose }: Props) {
 
         {messages.length === 1 && (
 
-          <div className="space-y-3">
+          <div className="space-y-6">
 
-            {quickQuestions.map((q) => (
+  {quickQuestions.map((section) => (
 
-              <button
-                key={q}
-                onClick={() => sendMessage(q)}
-                className="block w-full rounded-xl border bg-white p-3 text-left transition hover:border-blue-500 hover:bg-blue-50"
-              >
-                {q}
-              </button>
+    <div key={section.category}>
 
-            ))}
+      <h3 className="mb-3 text-xs font-semibold uppercase tracking-wider text-gray-500">
+        {section.category}
+      </h3>
 
-            <a
-              href="/Yashant_Sharma_Resume.pdf"
-              download
-              className="block w-full rounded-xl bg-blue-600 p-3 text-center font-medium text-white hover:bg-blue-700"
-            >
-              Download Resume
-            </a>
+      <div className="grid gap-2">
 
-          </div>
+        {section.items.map((question) => (
 
+          <button
+            key={question}
+            onClick={() => sendMessage(question)}
+            className="rounded-xl border bg-white px-4 py-3 text-left text-sm transition hover:border-blue-500 hover:bg-blue-50"
+          >
+            {question}
+          </button>
+
+        ))}
+
+      </div>
+
+    </div>
+
+  ))}
+
+  <a
+    href="/Yashant_Sharma_Resume.pdf"
+    download
+    className="block rounded-xl bg-blue-600 py-3 text-center font-medium text-white hover:bg-blue-700"
+  >
+    📄 Download Resume
+  </a>
+
+</div>
         )}
 
         {messages.map((message, index) => (
