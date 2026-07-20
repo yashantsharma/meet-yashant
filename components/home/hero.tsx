@@ -26,16 +26,16 @@ export function Hero() {
       />
 
       <div className="relative mx-auto max-w-7xl px-6 py-24 lg:px-8">
-        <div className="grid items-center gap-16 lg:grid-cols-[1fr_auto]">
+        <div className="mx-auto max-w-4xl text-center">
           <div>
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              className="mb-6 text-sm font-medium uppercase tracking-[0.25em] text-white/40"
-            >
-              {siteConfig.tagline}
-            </motion.p>
+            <motion.div
+  initial={{ opacity: 0, y: 20 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.6 }}
+  className="inline-flex rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/70 backdrop-blur"
+>
+  Consultant  • Founder  • Builder
+</motion.div>
 
             <motion.h1
               initial={{ opacity: 0, y: 30 }}
@@ -45,7 +45,7 @@ export function Hero() {
                 delay: 0.2,
                 ease: [0.22, 1, 0.36, 1],
               }}
-              className="text-5xl font-semibold leading-[1.05] tracking-tight text-white sm:text-6xl md:text-7xl lg:text-8xl"
+            className="mt-8 text-6xl font-bold leading-[0.95] tracking-tight text-white md:text-8xl"
             >
               Meet{" "}
               <span className="bg-gradient-to-r from-white via-white/90 to-white/60 bg-clip-text text-transparent">
@@ -59,23 +59,23 @@ export function Hero() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.4 }}
-              className="mt-8 max-w-2xl text-lg leading-relaxed text-white/50 md:text-xl md:leading-relaxed"
+              className="mx-auto mt-8 max-w-3xl text-xl leading-9 text-white/60"
             >
-              {siteConfig.headline}
+              Helping governments, universities and startups build ideas that create lasting impact through strategy, consulting and entrepreneurship.
             </motion.p>
 
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.55 }}
-              className="mt-10 flex flex-wrap gap-4"
+              className="mt-12 flex justify-center gap-4"
             >
               <Button
                 href="/Yashant_Sharma_Resume.pdf"
                 variant="primary"
                 icon={Download}
               >
-                Download Resume
+                View Resume
               </Button>
 
               <Button
@@ -83,42 +83,29 @@ export function Hero() {
                 variant="secondary"
                 icon={Mail}
               >
-                Contact
+                Lets Talk
               </Button>
             </motion.div>
+            <motion.div
+  initial={{ opacity: 0 }}
+  animate={{ opacity: 1 }}
+  transition={{ delay: 0.8 }}
+  className="mt-16"
+>
+  <p className="mb-5 text-xs uppercase tracking-[0.3em] text-white/30">
+    Trusted Experience
+  </p>
+
+  <div className="flex flex-wrap justify-center gap-8 text-sm font-medium text-white/50">
+    <span>PwC</span>
+    <span>Farm to Folks</span>
+    <span>Jamboree</span>
+    <span>Wisdom Tree</span>
+    <span>Ashoka</span>
+  </div>
+</motion.div>
           </div>
-
-          {/* Portrait placeholder */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{
-              duration: 0.8,
-              delay: 0.3,
-              ease: [0.22, 1, 0.36, 1],
-            }}
-            className="hidden lg:block"
-          >
-            <div className="relative h-[420px] w-[340px]">
-              <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-violet-600/20 via-transparent to-blue-600/20 blur-xl" />
-
-              <div className="relative h-full w-full overflow-hidden rounded-3xl border border-white/[0.08] bg-gradient-to-br from-white/[0.08] to-white/[0.02] backdrop-blur-sm">
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-
-                <div className="flex h-full flex-col items-center justify-center">
-                  <div className="flex h-32 w-32 items-center justify-center rounded-full bg-gradient-to-br from-violet-500/30 to-blue-500/30 ring-1 ring-white/10">
-                    <span className="text-4xl font-semibold text-white/80">
-                      YS
-                    </span>
-                  </div>
-
-                  <p className="mt-6 text-sm text-white/30">
-                    Professional Photo
-                  </p>
-                </div>
-              </div>
-            </div>
-          </motion.div>
+          
         </div>
 
         <motion.div
