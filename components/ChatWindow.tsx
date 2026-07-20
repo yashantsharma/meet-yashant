@@ -41,8 +41,8 @@ export default function ChatWindow({ open, onClose }: Props) {
         </h3>
 
         <p className="text-gray-600 mb-6">
-         Ask me anything about Yashant&#39;s consulting experience,
-leadership, entrepreneurship, education, or projects.
+         Ask me anything about Yashant&apos;s consulting experience,
+leadership, entrepreneurship, education, or projects. 
         </p>
 
         <div className="space-y-3">
