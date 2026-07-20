@@ -40,7 +40,11 @@ export function Hero() {
             <motion.h1
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+              transition={{
+                duration: 0.7,
+                delay: 0.2,
+                ease: [0.22, 1, 0.36, 1],
+              }}
               className="text-5xl font-semibold leading-[1.05] tracking-tight text-white sm:text-6xl md:text-7xl lg:text-8xl"
             >
               Meet{" "}
@@ -66,10 +70,19 @@ export function Hero() {
               transition={{ duration: 0.6, delay: 0.55 }}
               className="mt-10 flex flex-wrap gap-4"
             >
-              <Button href="/resume" variant="primary" icon={Download}>
+              <Button
+                href="/Yashant_Sharma_Resume.pdf"
+                variant="primary"
+                icon={Download}
+              >
                 Download Resume
               </Button>
-              <Button href="/contact" variant="secondary" icon={Mail}>
+
+              <Button
+                href="/contact"
+                variant="secondary"
+                icon={Mail}
+              >
                 Contact
               </Button>
             </motion.div>
@@ -79,18 +92,29 @@ export function Hero() {
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            transition={{
+              duration: 0.8,
+              delay: 0.3,
+              ease: [0.22, 1, 0.36, 1],
+            }}
             className="hidden lg:block"
           >
             <div className="relative h-[420px] w-[340px]">
               <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-violet-600/20 via-transparent to-blue-600/20 blur-xl" />
+
               <div className="relative h-full w-full overflow-hidden rounded-3xl border border-white/[0.08] bg-gradient-to-br from-white/[0.08] to-white/[0.02] backdrop-blur-sm">
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+
                 <div className="flex h-full flex-col items-center justify-center">
                   <div className="flex h-32 w-32 items-center justify-center rounded-full bg-gradient-to-br from-violet-500/30 to-blue-500/30 ring-1 ring-white/10">
-                    <span className="text-4xl font-semibold text-white/80">YS</span>
+                    <span className="text-4xl font-semibold text-white/80">
+                      YS
+                    </span>
                   </div>
-                  <p className="mt-6 text-sm text-white/30">Professional Photo</p>
+
+                  <p className="mt-6 text-sm text-white/30">
+                    Professional Photo
+                  </p>
                 </div>
               </div>
             </div>
@@ -105,7 +129,11 @@ export function Hero() {
         >
           <motion.div
             animate={{ y: [0, 8, 0] }}
-            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+            transition={{
+              duration: 2,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
           >
             <ArrowDown className="h-5 w-5 text-white/20" />
           </motion.div>
