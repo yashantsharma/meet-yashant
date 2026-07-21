@@ -208,15 +208,23 @@ export default function ChatWindow({ open, onClose }: Props) {
           >
 
             <div
-              className={`max-w-[85%] whitespace-pre-wrap rounded-2xl px-4 py-3 text-sm leading-7 ${
+              className={`max-w-[85%] rounded-2xl px-5 py-4 text-[15px] leading-7 ${
                 message.role === "user"
                   ? "bg-blue-600 text-white"
                   : "bg-white border text-gray-800"
               }`}
             >
-              <ReactMarkdown remarkPlugins={[remarkGfm]}>
-  {message.text}
-</ReactMarkdown>
+              <div
+  className={`prose prose-sm max-w-none ${
+    message.role === "user"
+      ? "prose-invert text-white"
+      : "text-gray-800 prose-headings:text-gray-900 prose-p:text-gray-700 prose-strong:text-gray-900 prose-li:text-gray-700"
+  }`}
+>
+  <ReactMarkdown remarkPlugins={[remarkGfm]}>
+    {message.text}
+  </ReactMarkdown>
+</div>
             </div>
 
           </div>
